@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:home_page/dtos/request/post_request.dart';
 
-void main() => runApp(const PostArticle());
-
-class PostArticle extends StatefulWidget {
-  const PostArticle({Key? key}) : super(key: key);
-
-  @override
-  _PostArticleState createState() => _PostArticleState();
-}
-
-class _PostArticleState extends State<PostArticle> {
-  bool _isRead = false;
+class PostArticle extends StatelessWidget {
+  final dynamic publicacion;
+  const PostArticle({
+    super.key,
+    this.publicacion,
+  });
 
   @override
   Widget build(BuildContext context) {
-    
+    final bool _isRead = false;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
@@ -42,17 +38,15 @@ class _PostArticleState extends State<PostArticle> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const TextTitlePage(
-                title:
-                    'Cómo el manejo de las emociones puede mejorar nuestra calidad de vida'),
+            TextTitlePage(title: '${publicacion.tituloPublicacion}'),
             Image.network(
-              'https://www.hakunamatata.com.co/wp-content/uploads/2022/11/que-son-emociones.jpg',
+              publicacion.imagePublicacion,
               width: 200,
               height: 200,
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Comprender mejor lo que sentimos implica tanto escuchar lo que nos pasa por dentro, como atender al contexto en el que nos sucede. Identificar qué le pasa a nuestro cuerpo frente a las emociones, reconocer qué nos pone en movimiento y qué nos paraliza. Tomar conciencia del efecto contagio, propio del mundo emocional.',
+            Text(
+              '${publicacion.cuerpoPublicacion}',
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.justify,
             ),
@@ -82,11 +76,7 @@ class _PostArticleState extends State<PostArticle> {
                       _isRead ? Icons.check_box : Icons.circle_outlined,
                       color: _isRead ? Colors.green : Colors.grey,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _isRead = true;
-                      });
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),

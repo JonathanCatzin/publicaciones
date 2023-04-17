@@ -51,6 +51,7 @@ class _MyPanelState extends State<MyPanel> {
     );
   }
 
+
   Widget _buildPanel() {
     return Consumer<PublicationsProvider>(
       builder: (context, publicationssProvider, child) {
@@ -98,7 +99,7 @@ class _MyPanelState extends State<MyPanel> {
                             Visibility(
                               visible: item.isExpanded,
                               child: Text(
-                                item.cuerpoPublicacion,
+                                 reduceTextTo50Words(item.cuerpoPublicacion),
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -111,7 +112,7 @@ class _MyPanelState extends State<MyPanel> {
                   ),
                 );
               },
-              body: buildContent(context, item.isExpanded
+              body: buildContent(context, item.isExpanded,item
                   // padding: EdgeInsets.all(10),
                   // child: Text(item.expandedValue),
                   ),
@@ -123,7 +124,16 @@ class _MyPanelState extends State<MyPanel> {
     );
   }
 
-  Widget buildContent(BuildContext context, bool isExpanded) {
+  
+  String reduceTextTo50Words(String text) {
+  final List<String> words = text.split(' ');
+  final int numOfWords = words.length;
+  final int numOfWordsToKeep = numOfWords > 15 ? 15 : numOfWords;
+  final String reducedText = words.take(numOfWordsToKeep).join(' ');
+  return reducedText;
+}
+
+  Widget buildContent(BuildContext context, bool isExpanded, dynamic item) {
     return Column(
       children: [
         // Text(
@@ -138,7 +148,7 @@ class _MyPanelState extends State<MyPanel> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PostArticle()),
+                  MaterialPageRoute(builder: (context) => PostArticle(publicacion: item)),
                 );
               },
               child: Text('Continuar leyendo'),
@@ -157,49 +167,4 @@ class _MyPanelState extends State<MyPanel> {
   }
 }
 
-class Item {
-  String headerValue;
-  String expandedValue;
-  String imageUrl;
-  bool isExpanded;
 
-  Item({
-    required this.headerValue,
-    required this.expandedValue,
-    required this.imageUrl,
-    this.isExpanded = false,
-  });
-
-  Widget buildContent(BuildContext context) {
-    return Column(
-      children: [
-        // Text(
-        //   expandedValue,
-        //   style: TextStyle(fontSize: 16),
-        // ),
-        SizedBox(height: 10),
-        if (isExpanded)
-          Padding(
-            padding: EdgeInsets.all(40),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PostArticle()),
-                );
-              },
-              child: Text('Continuar leyendo'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                minimumSize: Size(100, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-          )
-      ],
-    );
-  }
-}
